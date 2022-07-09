@@ -23,8 +23,7 @@ app.use(express.static("public"));
 
 
 
-
-const url = "mongodb+srv://Freinds:"+process.env.mongo_password+"@cluster0.azngz.mongodb.net/?retryWrites=true&w=majority"
+const url=`mongodb://Freinds:${process.env.mongo_password}@cluster0-shard-00-00.azngz.mongodb.net:27017,cluster0-shard-00-01.azngz.mongodb.net:27017,cluster0-shard-00-02.azngz.mongodb.net:27017/?ssl=true&replicaSet=atlas-10r9e4-shard-0&authSource=admin&retryWrites=true&w=majority`
 mongoose.connect(url);
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
