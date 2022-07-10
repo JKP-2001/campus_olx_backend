@@ -8,6 +8,6 @@ const conversationSchema=new mongoose.Schema({
     timestamps:true
 })
 
-const Message=mongoose.model("Message",messageSchema);
+const Conversation=mongoose.model("Conversation",conversationSchema);
 
-module.exports=Message
+module.exports=Conversation

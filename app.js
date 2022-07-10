@@ -35,6 +35,8 @@ app.use("/api/auth",require("./Routes/Auth"));
 app.use("/api/item",require("./Routes/Item"))
 app.use("/api/query",require("./Routes/ContactUs"))
 app.use("/admin", require("./Routes/Admin"));
+app.use("/api/conversation",require("./Routes/Conversation"));
+app.use("/api/message",require("./Routes/Message"));
 
 
 app.get("/",function(req,res){
