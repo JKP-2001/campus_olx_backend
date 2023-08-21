@@ -104,51 +104,88 @@ const changeContact = async (arr,newContact,email,name,hostel)=>{
     }
 }
 
+const sendEmail = (receiver, body, subject) => {
+    var transporter = nodemailer.createTransport({
+        host: "smtp-mail.outlook.com", // hostname
+        secureConnection: false, // TLS requires secureConnection to be false
+        port: 587, // port for secure SMTP
+        tls: {
+            ciphers: 'SSLv3'
+        },
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.EMAIL_PASSWORD
+        }
+    });
 
+    // setup e-mail data, even with unicode symbols
+    var mailOptions = {
+        from: `"Campus OLX " ${process.env.EMAIL}`, // sender address (who sends)
+        to: receiver, // list of receivers (who receives)
+        subject: subject, // Subject line
+        text: body, // plaintext body
+        // html: htmlBody // html body
+    };
 
-async function sendEmail(email,body,subject){
-
-    try{
-        const accessToken = await oAuthClient.getAccessToken();
-        // console.log("access token =",accessToken);
-        var transporter = nodemailer.createTransport({        // function to send mail to register user
-            service: 'gmail',     // mail sending platform
-            auth: {
-                type:'OAuth2',
-                user: 'innovatorsolx@gmail.com',    // Sender Mail Address
-                pass: process.env.EMAIL_PASSWORD,   // Sender Mail Password
-                clientId: process.env.CLIENT_ID, 
-                clientSecret: process.env.CLIENT_SECRET,
-                refreshToken: process.env.REFRESH_TOKEN,
-                accessToken: accessToken
-            }
-        });
-
-        var mailOptions = {
-            from: 'innovatorsolx@gmail.com',             // Sender Email
-            to: email,                             // Email requested by user
-            subject: subject,         // Subject Of The Mail
-            text: body,
-            //Custom Mail Message With the link to confirm email address (The link contain the user id and token corresponding)
-        };
-
-
-        transporter.sendMail(mailOptions, function (error, info,req,res) {  // Reciving Conformation Of Sent Mail
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function (error, info) {
+        try {
             if (error) {
-                console.log({error});
-            } else {
-                console.log("Success");
+                throw error;
             }
-        });
 
-
-    }catch(err){
-        console.log("err = ",err);
-    }
-
-
-
+            console.log('Message sent: ' + info.response);
+        } catch (err) {
+            console.log(err.toString());
+        }
+        // console.log('Message sent')
+    });
 }
+
+
+// async function sendEmail(email,body,subject){
+
+//     try{
+//         const accessToken = await oAuthClient.getAccessToken();
+//         // console.log("access token =",accessToken);
+//         var transporter = nodemailer.createTransport({        // function to send mail to register user
+//             service: 'gmail',     // mail sending platform
+//             auth: {
+//                 type:'OAuth2',
+//                 user: 'innovatorsolx@gmail.com',    // Sender Mail Address
+//                 pass: process.env.EMAIL_PASSWORD,   // Sender Mail Password
+//                 clientId: process.env.CLIENT_ID, 
+//                 clientSecret: process.env.CLIENT_SECRET,
+//                 refreshToken: process.env.REFRESH_TOKEN,
+//                 accessToken: accessToken
+//             }
+//         });
+
+//         var mailOptions = {
+//             from: 'innovatorsolx@gmail.com',             // Sender Email
+//             to: email,                             // Email requested by user
+//             subject: subject,         // Subject Of The Mail
+//             text: body,
+//             //Custom Mail Message With the link to confirm email address (The link contain the user id and token corresponding)
+//         };
+
+
+//         transporter.sendMail(mailOptions, function (error, info,req,res) {  // Reciving Conformation Of Sent Mail
+//             if (error) {
+//                 console.log({error});
+//             } else {
+//                 console.log("Success");
+//             }
+//         });
+
+
+//     }catch(err){
+//         console.log("err = ",err);
+//     }
+
+
+
+// }
 
 
 
